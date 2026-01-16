@@ -38,7 +38,14 @@ variable "ordered_cache_behaviour"{
     ordered_cached_origin_path_pattern = string
     ordered_cached_domain_name = string
   }))
-  default = []
+  default = [ {
+    ordered_cache_allowed_methods = [ ]
+    ordered_cached_methods = [ ]
+    ordered_cached_viewer_protocol_policy = null
+    ordered_cached_origin_id = null
+    ordered_cached_origin_path_pattern = null
+    ordered_cached_domain_name = null
+  }]
 }
 
 variable "custom_error_response"{
@@ -48,6 +55,10 @@ variable "custom_error_response"{
     response_code = string
     response_page_path = string
   }))
-  default = [ {} ]
+  default = [{
+    error_caching_min_ttl = null
+    error_code            = null
+    response_code         = null
+    response_page_path    = null
+  }]
 }
-
