@@ -8,6 +8,8 @@ This module implements ...
 
 ## How does it work
 
+This Terraform module provisions multiple AWS CloudFront distributions based on the configuration values you supply. In the example below, two distinct distributions are created. The first distribution includes multiple origins, an ordered cache behaviour for specific path patterns, a custom error response page, alternate domain names (CNAMEs), and an AWS ACM certificate for secure HTTPS traffic. In contrast, the second distribution is a simpler setup: it uses only the default behaviour and relies on the built-in CloudFront certificate for SSL (no custom ACM certificate required).
+
 ### First use after you clone this repository or when .pre-commit-config.yaml is updated
 
 Run `pre-commit install` to install any guardrails implemented using pre-commit.
@@ -29,14 +31,14 @@ module "cloudfront_distro"{
   project = var.project
   distributions = {
     first = {
-      allowed_methods = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
-      cached_methods = ["GET", "HEAD"]
-      viewer_protocol_policy = "redirect-to-https" //"Protocol that users can use to access the files in the origin. allow-all, https-only, or redirect-to-https.
-      default_origin_id = "verzekeringskaarten.s3.eu-west-1.amazonaws.com"
-      default_certificate = false
-      acm_certificate = "arn:aws:acm:us-east-1:158565517012:certificate/9d1b2a9c-4b64-43a0-9d03-d6b1c841b920"
-      minimum_protocol_version =  "TLSv1.2_2021"
-      alternate_domain_names = ["benext-nonprod.technative.cloud"]
+      allowed_methods = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"] //Allowed HTTP methods CloudFront processes and forwards to origin."
+      cached_methods = ["GET", "HEAD"] //"CloudFront caches the response to requests using the specified HTTP methods."
+      viewer_protocol_policy = "redirect-to-https" //Protocol that users can use to access the files in the origin. allow-all, https-only, or redirect-to-https.
+      default_origin_id = "verzekeringskaarten.s3.eu-west-1.amazonaws.com" //"The origin id which you want as default for your distribution"
+      default_certificate = false //"It is true when using CloudFront domain name for the distribution"
+      acm_certificate = "arn:aws:acm:us-east-1:158565517012:certificate/9d1b2a9c-4b64-43a0-9d03-d6b1c841b920" //"ARN of the AWS Cert Manager cert that you wish to use with this distribution"
+      minimum_protocol_version =  "TLSv1.2_2021" //"Minimum version of the SSL protocol that you want CloudFront to use for HTTPS connections"
+      alternate_domain_names = ["test.technative.cloud"] //"Extra CNAMEs (alternate domain names), if any, for this distribution."
       origin = [
         {
           origin_id = "verzekeringskaarten.s3.eu-west-1.amazonaws.com"
