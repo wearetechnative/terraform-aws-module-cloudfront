@@ -89,4 +89,43 @@ To use this module ...
 ```
 
 <!-- BEGIN_TF_DOCS -->
+## Providers
+
+| Name | Version |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
+
+## Modules
+
+No modules.
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [aws_cloudfront_distribution.example_distribution](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution) | resource |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_acm_certificate"></a> [acm\_certificate](#input\_acm\_certificate) | ARN of the AWS Certificate Manager certificate that you wish to use with this distribution | `string` | n/a | yes |
+| <a name="input_allowed_methods"></a> [allowed\_methods](#input\_allowed\_methods) | Which HTTP methods CloudFront processes and forwards to origin. | `list(string)` | n/a | yes |
+| <a name="input_alternate_domain_names"></a> [alternate\_domain\_names](#input\_alternate\_domain\_names) | Extra CNAMEs (alternate domain names), if any, for this distribution. | `list(string)` | `[]` | no |
+| <a name="input_aws_account_id"></a> [aws\_account\_id](#input\_aws\_account\_id) | ID of the AWS account. | `string` | n/a | yes |
+| <a name="input_cached_methods"></a> [cached\_methods](#input\_cached\_methods) | CloudFront caches the response to requests using the specified HTTP methods. | `list(string)` | n/a | yes |
+| <a name="input_custom_error_response"></a> [custom\_error\_response](#input\_custom\_error\_response) | Cloudfront error response elements | <pre>list(object({<br>    error_caching_min_ttl = number<br>    error_code = number<br>    response_code = number<br>    response_page_path = string<br>  }))</pre> | <pre>[<br>  {<br>    "error_caching_min_ttl": 0,<br>    "error_code": 0,<br>    "response_code": 0,<br>    "response_page_path": null<br>  }<br>]</pre> | no |
+| <a name="input_default_certificate"></a> [default\_certificate](#input\_default\_certificate) | It is true when using CloudFront domain name for the distribution | `bool` | `true` | no |
+| <a name="input_default_origin_id"></a> [default\_origin\_id](#input\_default\_origin\_id) | The origin id which you want as default for your distribution | `string` | n/a | yes |
+| <a name="input_git_url"></a> [git\_url](#input\_git\_url) | Git repository ID or URL for tagging and tracking. | `string` | n/a | yes |
+| <a name="input_infra_environment"></a> [infra\_environment](#input\_infra\_environment) | Name of the infrastructure environment. | `string` | n/a | yes |
+| <a name="input_minimum_protocol_version"></a> [minimum\_protocol\_version](#input\_minimum\_protocol\_version) | Minimum version of the SSL protocol that you want CloudFront to use for HTTPS connections | `string` | n/a | yes |
+| <a name="input_ordered_cache_behaviour"></a> [ordered\_cache\_behaviour](#input\_ordered\_cache\_behaviour) | Ordered list of cache behaviors(The topmost cache behavior will have precedence 0.) | <pre>list(object({<br>    allowed_methods = list(string)<br>    cached_methods = list(string)<br>    viewer_protocol_policy = string<br>    target_origin_id = string<br>    path_pattern = string<br>  }))</pre> | <pre>[<br>  {<br>    "allowed_methods": [],<br>    "cached_methods": [],<br>    "path_pattern": null,<br>    "target_origin_id": null,<br>    "viewer_protocol_policy": null<br>  }<br>]</pre> | no |
+| <a name="input_origin"></a> [origin](#input\_origin) | Origins for this distribution | <pre>list(object({<br>    origin_id = string<br>    origin_path = string<br>    domain_name = string<br><br>  }))</pre> | <pre>[<br>  {<br>    "domain_name": null,<br>    "origin_id": null,<br>    "origin_path": null<br>  }<br>]</pre> | no |
+| <a name="input_project"></a> [project](#input\_project) | Name of the project. | `string` | n/a | yes |
+| <a name="input_viewer_protocol_policy"></a> [viewer\_protocol\_policy](#input\_viewer\_protocol\_policy) | Protocol that users can use to access the files in the origin. allow-all, https-only, or redirect-to-https. | `string` | n/a | yes |
+
+## Outputs
+
+No outputs.
 <!-- END_TF_DOCS -->
