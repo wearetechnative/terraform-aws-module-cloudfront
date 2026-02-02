@@ -1,11 +1,11 @@
-resource "aws_cloudfront_distribution" "new_distribution" {
+resource "aws_cloudfront_distribution" "example_distribution" {
     for_each = local.cloudfront_distribution
     aliases = each.value.alternate_domain_names
     default_cache_behavior {
-      allowed_methods = each.value.allowed_methods    //["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
-      cached_methods = each.value.cached_methods//["GET", "HEAD"]
-      viewer_protocol_policy = each.value.viewer_protocol_policy//"redirect-to-https"
-      target_origin_id = each.value.default_origin_id//"d3sizd68cnvctg"
+      allowed_methods = each.value.allowed_methods    
+      cached_methods = each.value.cached_methods
+      viewer_protocol_policy = each.value.viewer_protocol_policy
+      target_origin_id = each.value.default_origin_id
       forwarded_values {
         query_string = false
         cookies {
@@ -14,7 +14,8 @@ resource "aws_cloudfront_distribution" "new_distribution" {
      }
     } 
     dynamic ordered_cache_behavior {
-      for_each =  each.value.ordered_cache_behaviour
+      for_each = each.value.ordered_cache_behaviour != null ? each.value.ordered_cache_behaviour:[]
+      
       content{
         path_pattern = ordered_cache_behavior.value.path_pattern
         allowed_methods = ordered_cache_behavior.value.allowed_methods
@@ -32,7 +33,7 @@ resource "aws_cloudfront_distribution" "new_distribution" {
     } 
 
     dynamic custom_error_response {
-      for_each = each.value.custom_error_response
+       for_each = each.value.custom_error_response != null ? each.value.custom_error_response:[]
       content{
         error_code = custom_error_response.value.error_code
         error_caching_min_ttl = custom_error_response.value.error_caching_min_ttl
@@ -46,9 +47,9 @@ resource "aws_cloudfront_distribution" "new_distribution" {
     dynamic origin {
       for_each = each.value.origin
       content{
-        domain_name = origin.value.domain_name//"websitepankhuri.s3.eu-central-1.amazonaws.com"
-        origin_id = origin.value.origin_id//"d3sizd68cnvctg"
-        origin_path = origin.value.origin_path//"/index.html"
+        domain_name = origin.value.domain_name
+        origin_id = origin.value.origin_id
+        origin_path = origin.value.origin_path
       }
         
     

@@ -26,29 +26,31 @@ variable "distributions" {
     cached_methods = list(string)
     viewer_protocol_policy = string
     default_origin_id = string
-    alternate_domain_names = list(string)
+    alternate_domain_names = optional(list(string))
     default_certificate = bool
-    acm_certificate = string
+    acm_certificate = optional(string)
     minimum_protocol_version = string
     origin = list(object({
       origin_id = string
       origin_path = string
       domain_name = string
     }))
-    custom_error_response = list(object({
+    custom_error_response = optional(list(object({
       error_caching_min_ttl = number
       error_code = number
       response_code = number
       response_page_path = string
-    }))
-    ordered_cache_behaviour = list(object({
+    })))
+    ordered_cache_behaviour = optional(list(object({
       allowed_methods = list(string)
       cached_methods = list(string)
       viewer_protocol_policy = string
       target_origin_id = string
       path_pattern = string
-    }))
+    })))
   }))
   default = {}
 }
+
+
 
