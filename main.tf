@@ -8,14 +8,15 @@ resource "aws_cloudfront_origin_access_control" "this" {
 }
 
 resource "aws_cloudfront_distribution" "this" {
-  for_each        = local.cloudfront_distribution
-  aliases         = each.value.alternate_domain_names
-  comment         = each.value.comment
-  enabled         = true
-  price_class     = each.value.price_class
-  http_version    = each.value.http_version
-  is_ipv6_enabled = each.value.is_ipv6_enabled
-  web_acl_id      = each.value.web_acl_id
+  for_each            = var.distributions
+  aliases             = each.value.alternate_domain_names
+  comment             = each.value.comment
+  enabled             = each.value.enabled
+  price_class         = each.value.price_class
+  http_version        = each.value.http_version
+  is_ipv6_enabled     = each.value.is_ipv6_enabled
+  web_acl_id          = each.value.web_acl_id
+  default_root_object = each.value.default_root_object
   default_cache_behavior {
     allowed_methods        = each.value.allowed_methods
     cached_methods         = each.value.cached_methods
@@ -33,7 +34,7 @@ resource "aws_cloudfront_distribution" "this" {
     }
   }
   dynamic "ordered_cache_behavior" {
-    for_each = each.value.ordered_cache_behaviour != null ? each.value.ordered_cache_behaviour : []
+    for_each = each.value.ordered_cache_behavior != null ? each.value.ordered_cache_behavior : []
 
     content {
       path_pattern           = ordered_cache_behavior.value.path_pattern
@@ -101,8 +102,8 @@ resource "aws_cloudfront_distribution" "this" {
   }
   restrictions {
     geo_restriction {
-      locations        = []
-      restriction_type = "none"
+      restriction_type = each.value.geo_restriction.restriction_type
+      locations        = each.value.geo_restriction.locations
     }
   }
   viewer_certificate {

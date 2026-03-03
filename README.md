@@ -2,7 +2,7 @@
 
 <!-- SHIELDS -->
 
-This module implements AWS CloudFront distributions with full support for Origin Access Control (OAC), CloudFront functions, cache policies, WAF associations, custom origins, and ordered cache behaviours.
+This module implements AWS CloudFront distributions with full support for Origin Access Control (OAC), CloudFront functions, cache policies, WAF associations, custom origins, and ordered cache behaviors.
 
 [![](we-are-technative.png)](https://www.technative.nl)
 
@@ -13,7 +13,7 @@ This Terraform module provisions multiple AWS CloudFront distributions based on 
 The examples below cover the three most common patterns:
 
 1. **Standard S3 distribution** — single S3 origin with OAC created by the module, a managed cache policy, a CloudFront viewer-request function, and a custom ACM certificate.
-2. **Multi-origin distribution** — two S3 origins with OAC, an ordered cache behaviour routing a path pattern to a secondary origin, and a custom error response.
+2. **Multi-origin distribution** — two S3 origins with OAC, an ordered cache behavior routing a path pattern to a secondary origin, and a custom error response.
 3. **Custom (ALB / S3-website) origin** — no OAC, using `custom_origin_config` for HTTPS-only forwarding to a load balancer.
 
 ### First use after you clone this repository or when .pre-commit-config.yaml is updated
@@ -102,7 +102,7 @@ module "cloudfront" {
         }
       ]
 
-      ordered_cache_behaviour = [
+      ordered_cache_behavior = [
         {
           path_pattern           = "/*/_archive/*"
           allowed_methods        = ["GET", "HEAD"]
@@ -201,10 +201,20 @@ No modules.
 | `web_acl_id` | `optional(string)` | `null` | ARN of a CloudFront-scoped WAF v2 Web ACL (`us-east-1`). |
 | `alternate_domain_names` | `optional(list(string))` | `null` | CNAMEs for the distribution. |
 | `acm_certificate` | `optional(string)` | `null` | ACM certificate ARN in `us-east-1`. Required when `default_certificate = false`. |
+| `enabled` | `optional(bool)` | `true` | Whether the distribution is enabled to accept end-user requests. |
+| `default_root_object` | `optional(string)` | `null` | Object returned when the root URL is requested (e.g. `"index.html"`). |
+| `geo_restriction` | `optional(object)` | `{ restriction_type = "none", locations = [] }` | Geographic restriction configuration. See below. |
 | `function_associations` | `optional(list(object))` | `null` | CloudFront function associations for the default cache behavior. See below. |
 | `origin` | `list(object)` | required | List of origins. See below. |
 | `custom_error_response` | `optional(list(object))` | `null` | Custom error response rules. See below. |
-| `ordered_cache_behaviour` | `optional(list(object))` | `null` | Ordered cache behaviors evaluated before the default. See below. |
+| `ordered_cache_behavior` | `optional(list(object))` | `null` | Ordered cache behaviors evaluated before the default. See below. |
+
+**`geo_restriction` object:**
+
+| Field | Type | Default | Description |
+|---|---|---|---|
+| `restriction_type` | `optional(string)` | `"none"` | Type of restriction: `"none"`, `"whitelist"`, or `"blacklist"`. |
+| `locations` | `optional(list(string))` | `[]` | ISO 3166-1-alpha-2 country codes, e.g. `["US", "CA", "GB"]`. |
 
 **`function_associations` object:**
 
@@ -234,7 +244,7 @@ No modules.
 | `http_port` | `optional(number)` | `80` | HTTP port on the origin. |
 | `https_port` | `optional(number)` | `443` | HTTPS port on the origin. |
 
-**`ordered_cache_behaviour` object:**
+**`ordered_cache_behavior` object:**
 
 | Field | Type | Default | Description |
 |---|---|---|---|

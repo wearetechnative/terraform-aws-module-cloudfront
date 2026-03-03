@@ -64,7 +64,7 @@ variable "distributions" {
       response_code         = number
       response_page_path    = string
     })))
-    ordered_cache_behaviour = optional(list(object({
+    ordered_cache_behavior = optional(list(object({
       allowed_methods        = list(string)
       cached_methods         = list(string)
       viewer_protocol_policy = string
@@ -77,6 +77,12 @@ variable "distributions" {
         function_arn = string
       })))
     })))
+    enabled             = optional(bool, true)
+    default_root_object = optional(string)
+    geo_restriction = optional(object({
+      restriction_type = optional(string, "none")
+      locations        = optional(list(string), [])
+    }), {})
   }))
   default = {}
 }
