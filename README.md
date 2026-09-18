@@ -1,4 +1,4 @@
-# Terraform AWS Module Cloudfront ![](https://img.shields.io/github/workflow/status/TechNative-B-V/terraform-aws-module-name/tflint.yaml?style=plastic)
+# Terraform AWS Module Cloudfront ![](https://img.shields.io/github/actions/workflow/status/wearetechnative/terraform-aws-module-cloudfront/lint.yaml?branch=main&style=plastic&label=lint) ![](https://img.shields.io/github/actions/workflow/status/wearetechnative/terraform-aws-module-cloudfront/security-scan.yaml?branch=main&style=plastic&label=security)
 
 <!-- SHIELDS -->
 
